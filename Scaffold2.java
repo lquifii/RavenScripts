@@ -2,7 +2,7 @@ int rotTick = 0;
 
 void onPreUpdate() {
     modules.setSlider("Scaffold", "Fast scaffold", 6);
-    modules.setSlider("Scaffold", "Fast scaffold motion", 0.94);
+    modules.setSlider("Scaffold", "Fast scaffold motion", 0.84);
     modules.setSlider("Scaffold", "Rotation", 0);
     modules.setButton("Scaffold", "Highlight blocks", true);
     modules.setButton("Scaffold", "Silent swing", true);
