@@ -32,6 +32,7 @@ void onLoad() {
     setDataArray("BedAura", "", "Break mode", new String[]{"Legit", "Instant", "Dynamic"});
     setDataArray("Scaffold", "Scaffold", "Sprint mode", new String[]{"Slow", "Vanilla", "Float"});
     setDataArray("InvMove", "", "Inventory", new String[]{"Disabled", "Vanilla", "Blink", "Close"});
+    setDataArray("BHop", "", "Mode", new String[]{"Ground", "Strafe", "7 tick", "8 tick", "9 tick"});
     
     // Color settings
     modules.registerSlider("Color 1 - Red", "", 255, 0, 255, 1);
