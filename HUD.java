@@ -30,7 +30,7 @@ void onLoad() {
     setDataArray("Long Jump", "Flight", "Mode", new String[]{"Keep-Y", "Ignore-Y"});
     setDataArray("NoFall", "NoFall", "Mode", new String[]{"Spoof", "NoGround", "Timer", "Packet"});
     setDataArray("BedAura", "", "Break mode", new String[]{"Legit", "Instant", "Dynamic"});
-    setDataArray("Scaffold", "Scaffold", "Fast scaffold", new String[]{"Ignore-Y", "Jump", "Jump", "Jump", "Keep-Y", "Keep-Y", "Keep-Y"});
+    setDataArray("Scaffold", "Scaffold", "Sprint mode", new String[]{"Slow", "Vanilla", "Float"});
     setDataArray("InvMove", "", "Inventory", new String[]{"Disabled", "Vanilla", "Blink", "Close"});
     
     // Color settings
