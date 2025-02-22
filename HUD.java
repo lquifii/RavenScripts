@@ -178,8 +178,6 @@ void onPreUpdate() {
     moduleHeight = (float) render.getFontHeight() + gap;
     xOffset = (float) modules.getSlider(scriptName, "X-Offset");
     yOffset = (float) modules.getSlider(scriptName, "Y-Offset");
-
-    setDataArray("BHop", "Bhop", "Mode", new String[]{"Strafe", "GroundStrafe", "7 Tick", "8 Tick", "9 Tick"});
 }
 
 
