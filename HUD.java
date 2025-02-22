@@ -24,11 +24,13 @@ void onLoad() {
     setDataArray("NoSlow", "", "Mode", new String[]{"Vanilla", "Float", "Interact", "Invalid", "Jump", "Sneak"});
     setDataArray("NoFall", "", "Mode", new String[]{"Spoof", "Single", "Extra", "NoGround A", "NoGround B", "Precision", "Position"});
     setDataArray("BedAura", "", "Break mode", new String[]{"Legit", "Instant", "Swap"});
+    setDataArray("BHop", "", "Mode", new String[]{"Ground", "Strafe", "7 tick", "8 tick", "9 tick"});
+    setDataArray("Scaffold", "", "Fast scaffold", new String[]{"None", "Jump A", "Jump B", "Jump C", "Keep-Y", "Keep-Y B", "Keep-Y C"});
     setDataSlider("LagRange", "", "%v1ms", new String[]{"Latency"});
     setDataArray("HitSelect", "", "Mode", new String[]{"Last", "Criticals"});
 
     // Color settings
-    modules.registerDescription("edited by lquifi");
+    modules.registerDescription("edited by @lquifii on discord.");
     modules.registerSlider("Color 1 - Red", "", 255, 0, 255, 1);
     modules.registerSlider("Color 1 - Green", "", 0, 0, 255, 1);
     modules.registerSlider("Color 1 - Blue", "", 0, 0, 255, 1);
