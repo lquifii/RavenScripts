@@ -1,3 +1,5 @@
+// for loadstring: load - "https://raw.githubusercontent.com/lquifii/RavenScripts/refs/heads/main/HUD.java"
+
 List<Map<String, Object>> mods = new ArrayList<>();
 Map<String, Map<String, String>> customModuleData = new HashMap<>();
 List<Map<String, Object>> customDataList = new ArrayList<>();
