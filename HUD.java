@@ -16,12 +16,12 @@ boolean lowercase;
 
 void onLoad() {
     modules.registerDescription("Made By pug");
-    modules.registerDescription("Edited By @.key97");
-    setDataArray("KillAura", "", "Autoblock", new String[]{"Legit", "Blinkless", "Visual", "Semi", "Blink", "Interact", "Buffer", "Desync"});
+    modules.registerDescription("Edited By @.key97, @lquifii");
+    setDataArray("KillAura", "", "Autoblock", new String[]{"Legit", "Blinkless", "Visual", "Semi", "Blink", "Interact", "Hypixel", "Desync"});
     setDataSlider("AntiVoid", "AntiVoid", "Blink", new String[]{""});
     setDataSlider("Disabler", "Disabler", "FastFall", new String[]{""});
     setDataSlider("TargetStrafe", "TargetStrafe", "Locked", new String[]{""});
-    setDataSlider("AntiKnockback", "AntiKnockback", "%v1% %v2%", new String[]{"Horizontal", "Vertical"});
+    setDataSlider("AntiKnockback", "Velocity", "%v1% %v2%", new String[]{"Horizontal", "Vertical"});
     setDataSlider("FastMine", "", "%v1x", new String[]{"Break speed"});
     setDataSlider("Jump Reset", "", "%v1%", new String[]{"Chance"});
     setDataSlider("WTap", "", "%v1%", new String[]{"Chance"});
