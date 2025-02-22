@@ -15,26 +15,18 @@ int resetTicks = 0;
 boolean lowercase;
 
 void onLoad() {
-    modules.registerDescription("Made By pug");
-    modules.registerDescription("Edited By @.key97, @lquifii");
-    setDataArray("KillAura", "", "Autoblock", new String[]{"Legit", "Blinkless", "Visual", "Semi", "Blink", "Interact", "Hypixel", "Desync"});
-    setDataSlider("AntiVoid", "AntiVoid", "Blink", new String[]{""});
-    setDataSlider("Disabler", "Disabler", "FastFall", new String[]{""});
-    setDataSlider("TargetStrafe", "TargetStrafe", "Locked", new String[]{""});
+    setDataArray("KillAura", "", "Targets", new String[]{"Single", "Single", "Switch"});
     setDataSlider("AntiKnockback", "Velocity", "%v1% %v2%", new String[]{"Horizontal", "Vertical"});
+    setDataSlider("Velocity", "", "%v1% %v2%", new String[]{"Horizontal", "Vertical"});
     setDataSlider("FastMine", "", "%v1x", new String[]{"Break speed"});
-    setDataSlider("Jump Reset", "", "%v1%", new String[]{"Chance"});
-    setDataSlider("WTap", "", "%v1%", new String[]{"Chance"});
-    setDataSlider("InvManager", "Inventory", "%v1x", new String[]{"Auto sort"});
-    setDataArray("NoSlow", "NoSlow", "Mode", new String[]{"Vanilla", "Pre", "Post", "Alpha", "Float"});
-    setDataArray("Long Jump", "Flight", "Mode", new String[]{"Keep-Y", "Ignore-Y"});
-    setDataArray("NoFall", "NoFall", "Mode", new String[]{"Spoof", "NoGround", "Timer", "Packet"});
-    setDataArray("BedAura", "", "Break mode", new String[]{"Legit", "Instant", "Dynamic"});
-    setDataArray("Scaffold", "Scaffold", "Sprint mode", new String[]{"Slow", "Vanilla", "Float"});
-    setDataArray("InvMove", "", "Inventory", new String[]{"Disabled", "Vanilla", "Blink", "Close"});
-    setDataArray("BHop", "", "Mode", new String[]{"Ground", "Strafe", "7 tick", "8 tick", "9 tick"});
-    
+    setDataArray("NoSlow", "", "Mode", new String[]{"Vanilla", "Float", "Interact", "Invalid", "Jump", "Sneak"});
+    setDataArray("NoFall", "", "Mode", new String[]{"Spoof", "Single", "Extra", "NoGround A", "NoGround B", "Precision", "Position"});
+    setDataArray("BedAura", "", "Break mode", new String[]{"Legit", "Instant", "Swap"});
+    setDataSlider("LagRange", "", "%v1ms", new String[]{"Latency"});
+    setDataArray("HitSelect", "", "Mode", new String[]{"Last", "Criticals"});
+
     // Color settings
+    modules.registerDescription("edited by lquifi");
     modules.registerSlider("Color 1 - Red", "", 255, 0, 255, 1);
     modules.registerSlider("Color 1 - Green", "", 0, 0, 255, 1);
     modules.registerSlider("Color 1 - Blue", "", 0, 0, 255, 1);
@@ -44,7 +36,7 @@ void onLoad() {
     modules.registerSlider("Background Opacity", "", 0, 0, 255, 1);
 
     modules.registerSlider("Mode", "Mode", 0, new String[]{"Static", util.color("&cR&6a&ei&an&bb&do&5w"), util.color("&4G&cr&5a&bd&3i&9e&1n&1t")});
-    modules.registerSlider("Direction", "Direction", 1, new String[]{"Up", "Down"});
+    modules.registerSlider("Direction", "", 1, new String[]{"Up", "Down"});
     modules.registerSlider("Wave Speed", "s", 5, 0.1, 10, 0.1);
 
     modules.registerSlider("Animations", "", 0, new String[]{"Scale Right", "Scale Center"});
@@ -56,7 +48,6 @@ void onLoad() {
     modules.registerSlider("Y-Offset", "", 1, 0, 50, 1);
 
     modules.registerSlider("Outline Mode", "", 0, new String[]{util.color("&cDisabled"), util.color("Left &c(WIP)"), "Right", util.color("Full &c(WIP)")});
-    modules.registerSlider("Suffix Addons", "", 0, new String[]{"Disabled", "Angle Brackets", "Brackets", "Curly Braces", "Dash", "Parentheses"});
     modules.registerSlider("Line Gap", "", 2, 0, 5, 0.1);
 }
 
@@ -142,47 +133,41 @@ void updateCustomData(Map<String, Object> customData) {
 }
 
 void onEnable() {
+    mods.clear();
     resetTicks = 0;
-    if (!firstTime) {
-        Map<String, List<String>> categories = modules.getCategories();
-        for (String category : categories.keySet()) {
-            if (category.equalsIgnoreCase("profiles") || category.equalsIgnoreCase("fun")) continue;
-
-            List<String> modulesList = categories.get(category);
-            for (String module : modulesList) {
-                Map<String, Object> modData = new HashMap<>();
-                modData.put("name", module);
-                modData.put("visibility", false);
-                modData.put("offset", 0);
-                modData.put("scale", 0);
-                modData.put("animating", false);
-                modData.put("animatingUp", false);
-                modData.put("animationStart", 0L);
-                modData.put("animationProgress", 0);
-                mods.add(modData);
-            }
+    Map<String, List<String>> categories = modules.getCategories();
+    for (String category : categories.keySet()) {
+        if (category.equalsIgnoreCase("profiles")) continue;
+        List<String> modulesList = categories.get(category);
+        for (String module : modulesList) {
+            Map<String, Object> modData = new HashMap<>();
+            modData.put("name", module);
+            modData.put("visibility", false);
+            modData.put("offset", 0);
+            modData.put("scale", 0);
+            modData.put("animating", false);
+            modData.put("animatingUp", false);
+            modData.put("animationStart", 0L);
+            modData.put("animationProgress", 0);
+            mods.add(modData);
         }
-        sortModules();
-        firstTime = true;
     }
 
     updateButtonStates();
     updateSliders();
+    updateEnabledModules();
     sortModules();
 }
 
 void onPreUpdate() {
     resetTicks++;
-    int ticks = client.getPlayer().getTicksExisted();
     updateEnabledModules();
     lineGap = (float) modules.getSlider(scriptName, "Line Gap");
     moduleHeight = (float) render.getFontHeight() + gap;
     xOffset = (float) modules.getSlider(scriptName, "X-Offset");
     yOffset = (float) modules.getSlider(scriptName, "Y-Offset");
-}
 
-
-    if (ticks % 5 == 0) {
+    if (resetTicks == 1 || resetTicks % 5 == 0) {
         updateSliders();
     }
 }
@@ -253,20 +238,6 @@ void onRenderTick(float partialTicks) {
     float prevY = yOffset;
     float firstY = y;
 
-    // Cache frequently used values
-    float fontHeight = render.getFontHeight();
-    float textScaleCached = textScale;
-    float moduleHeightCached = moduleHeight;
-    int backgroundCached = background;
-    int outlineModeCached = outlineMode;
-    int colorModeCached = colorMode;
-    Color staticColorCached = staticColor;
-    Color startColorCached = startColor;
-    Color endColorCached = endColor;
-    float waveSpeedCached = waveSpeed;
-    boolean lowercaseCached = lowercase;
-    int suffixAddonMode = (int) modules.getSlider(scriptName, "Suffix Addons");
-
     for (Map<String, Object> mod : mods) {
         boolean animating = (boolean) mod.get("animating");
         if (!(boolean) mod.get("visibility") && !animating) {
@@ -283,19 +254,19 @@ void onRenderTick(float partialTicks) {
             displayValue = customData.getOrDefault("overrideValue", "");
         }
 
-        float scale = (float) mod.get("scale") * textScaleCached;
-        String textToDisplay = displayName + (displayValue.isEmpty() ? "" : " " + util.colorSymbol + "7" + formatSuffix(displayValue, suffixAddonMode));
+        float scale = (float) mod.get("scale") * textScale;
+        String textToDisplay = displayName + (displayValue.isEmpty() ? "" : " " + util.colorSymbol + "7" + displayValue);
 
-        float textWidth = (float) render.getFontWidth(textToDisplay) * textScaleCached;
+        float textWidth = (float) render.getFontWidth(textToDisplay) * textScale;
         float scaledTextWidth = textWidth * scale;
         float finalXPosition;
 
         switch (animationMode) {
             case 1: // Scale Center
-                finalXPosition = displayWidth - x - (textWidth / 2f) - ((textWidth * scale) / (2f * textScaleCached));
+                finalXPosition = displayWidth - x - (textWidth / 2f) - ((textWidth * scale) / (2f * textScale));
                 break;
             case 0: // Scale Right
-                finalXPosition = displayWidth - (scaledTextWidth / textScaleCached) - x + (1 - scale);
+                finalXPosition = displayWidth - (scaledTextWidth / textScale) - x + (1 - scale);
                 break;
             default:
                 finalXPosition = displayWidth - scaledTextWidth - x;
@@ -304,38 +275,38 @@ void onRenderTick(float partialTicks) {
 
         float x1 = finalXPosition - scale;
         float y1 = y;
-        float x2 = finalXPosition + (textWidth / textScaleCached) * scale + scale;
-        float y2 = y + fontHeight * scale + scale;
+        float x2 = finalXPosition + (textWidth / textScale) * scale + scale;
+        float y2 = y + render.getFontHeight() * scale + scale;
 
-        render.rect(x1, y1, x2, y2, backgroundCached);
+        render.rect(x1, y1, x2, y2, background);
 
-        switch (colorModeCached) {
+        switch (colorMode) {
             case 0: // Static
-                color = staticColorCached.getRGB();
+                color = staticColor.getRGB();
                 break;
             case 1: // Rainbow
-                color = getRainbow(waveSpeedCached, 1f, 1f, index);
+                color = getRainbow(waveSpeed, 1f, 1f, index);
                 break;
             case 2: // Rolling Gradient
-                double ratio = getWaveRatio(waveSpeedCached, index);
-                color = blendColors(startColorCached, endColorCached, ratio).getRGB();
+                double ratio = getWaveRatio(waveSpeed, index);
+                color = blendColors(startColor, endColor, ratio).getRGB();
                 break;
             default:
                 color = 0xFFFFFF;
         }
 
-        render.text2d(lowercaseCached ? textToDisplay.toLowerCase() : textToDisplay, finalXPosition, y1 + scale, scale, color, true);
+        render.text2d(lowercase ? textToDisplay.toLowerCase() : textToDisplay, finalXPosition, y1 + scale, scale, color, true);
 
-        if (outlineModeCached == 2) {
+        if (outlineMode == 2) {
             // Fix the line position and only animate the height
-            float outlineX = displayWidth - x + lineGap * textScaleCached; // Fixed horizontal position
+            float outlineX = displayWidth - x + lineGap * textScale; // Fixed horizontal position
             float outlineY1 = y1;
             float outlineY2 = y2;
 
-            render.rect(outlineX, outlineY1, outlineX + textScaleCached, outlineY2, color);
+            render.rect(outlineX, outlineY1, outlineX + textScale, outlineY2, color);
         }
 
-        y += moduleHeightCached * scale;
+        y += moduleHeight * scale;
         index += (direction == 0) ? 100 * scale : -100 * scale;
     }
 }
@@ -468,23 +439,4 @@ void sortModules() {
 
 String formatDoubleStr(double val) {
     return val == (long) val ? Long.toString((long) val) : Double.toString(val);
-}
-
-String formatSuffix(String suffix, int mode) {
-    switch (mode) {
-        case 1: // Angle Brackets
-            return "<" + suffix + ">";
-        case 2: // Brackets
-            return "[" + suffix + "]";
-        case 3: // Curly Braces
-            return "{" + suffix + "}";
-        case 4: // Dash
-            return "- " + suffix;
-        case 0: // Disabled
-            return suffix;
-        case 5: // Parentheses
-            return "(" + suffix + ")";
-        default:
-            return suffix;
-    }
 }
