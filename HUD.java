@@ -179,9 +179,6 @@ void onPreUpdate() {
     xOffset = (float) modules.getSlider(scriptName, "X-Offset");
     yOffset = (float) modules.getSlider(scriptName, "Y-Offset");
 
-if (modules.getButton("BHop", "4 Tick AirStrafe")) {
-    setDataArray("BHop", "Bhop", "Mode", new String[]{"Strafe", "AirStrafe", "7 Tick AirStrafe", "8 Tick AirStrafe", "9 Tick AirStrafe"});
-} else {
     setDataArray("BHop", "Bhop", "Mode", new String[]{"Strafe", "GroundStrafe", "7 Tick", "8 Tick", "9 Tick"});
 }
 
