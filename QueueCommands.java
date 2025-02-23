@@ -4,6 +4,10 @@ improved by itsjsbh
 */
 String ign;
 
+void onLoad() {
+    modules.enable(scriptName);
+}
+
 boolean onPacketSent(CPacket packet) {
     if (packet instanceof C01) {
         C01 c01 = (C01) packet;
