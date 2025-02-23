@@ -4,7 +4,7 @@ boolean myauTowering = false;
 boolean myauKeepying = true;
 
 void onEnable() {
-    client.chat(".scaffold airmotion 82");
+    client.chat(".scaffold airmotion 80");
 }
 
 void onPreUpdate() {
@@ -13,7 +13,7 @@ void onPreUpdate() {
         myauKeepying = false;
 
         if (!myauTowering && player.onGround()) {
-            client.chat(".scaffold air-motion 110");
+            client.chat(".scaffold air-motion 103");
 
             myauTowering = true;
         }
@@ -21,7 +21,7 @@ void onPreUpdate() {
         myauTowering = false;
 
         if (!myauKeepying && client.isMoving()) {
-            client.chat(".scaffold air-motion 82"); 
+            client.chat(".scaffold air-motion 80"); 
 
             myauKeepying = true;
         }
