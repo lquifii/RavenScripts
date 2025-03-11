@@ -107,24 +107,60 @@ boolean onPacketSent(CPacket packet) {
 }
 
 void onPreMotion(PlayerState event) {
+void onPreMotion(PlayerState state) {
+
     Entity player = client.getPlayer();
-    Vec3 motion = client.getMotion(), pos = player.getPosition();
-    rotationYaw = player.getYaw();
-    inAirTicks = player.onGround() ? 0 : inAirTicks + 1;
 
-    if (keybinds.isKeyDown(57)) return;
-    
-    if (!player.onGround()) {
-        if (crots != null) {
-            event.pitch = crots[1];
-        }
-        event.yaw = player.getYaw() - 180;
+
+
+    if (player.isHoldingBlock()) && client.isMoving()) {
+
+        boolean w = keybinds.isPressed("forward");
+
+        boolean a = keybinds.isPressed("left");
+
+        boolean s = keybinds.isPressed("back");
+
+        boolean d = keybinds.isPressed("right");
+
+        boolean space = keybinds.isPressed("jump");
+
+
+
+if (w && a && s && d || w && !a && !s && !d || w && !a && s && !d) {
+
+    state.yaw = player.getYaw() - 137;
+
+} else if (w && !a && !s && d) {
+
+    state.yaw = player.getYaw() - -185;
+
+} else if (w && a && !s && !d) {
+
+    state.yaw = player.getYaw() - 185;
+
+} else if (!w && a && !s && !d) {
+
+    state.yaw = player.getYaw() - 270;
+
+} else if (!w && a && s && !d) {
+
+    state.yaw = player.getYaw() - 310;
+
+} else if (!w && !a && !s && d) {
+
+    state.yaw = player.getYaw() - 90;
+
+} else if (!w && !a && s && d) {
+
+    state.yaw = player.getYaw() - 50;
+
+}
+
+        state.pitch = 85;    
+
     }
 
-    if (targetBlock != null) {
-        rots = client.getRotationsToBlock(targetBlock, side);
-        targetBlock = null;
-    }
 }
 
 void onRenderTick(float partialTicks) {
