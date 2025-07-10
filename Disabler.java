@@ -182,7 +182,7 @@ void onWorldJoin(Entity en) {
     if (en == client.getPlayer()) {
         long joinTime = client.time();
         if (awaitSetback) {
-            client.print("&7[&dR&7] &cdisabing disabler");
+            client.print("&7[&dR&7] &cdisabling disabler");
             resetVars();
         }
         bridge.remove("disabler");
