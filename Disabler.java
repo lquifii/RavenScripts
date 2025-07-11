@@ -59,7 +59,7 @@ void onPreMotion(PlayerState state) {
                     waitForJump = false;
                 }
                 if (!waitForJump && player.onGround() && state.y % 1 == 0) {
-                    state.y += 1e-14;
+                    state.y += 1e-3;
                     //client.print("floating");
                 }
             }
@@ -182,7 +182,7 @@ void onWorldJoin(Entity en) {
     if (en == client.getPlayer()) {
         long joinTime = client.time();
         if (awaitSetback) {
-            client.print("&7[&dR&7] &cdisabing disabler");
+            client.print("&7[&dR&7] &cdisabling disabler");
             resetVars();
         }
         bridge.remove("disabler");
